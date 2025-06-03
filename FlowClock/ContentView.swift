@@ -60,7 +60,10 @@ struct Dial: View {
 
             // Dial
             Circle()
-                .stroke(Color.white, lineWidth: thickness)
+                .stroke(
+                    Color("DialColor"), // Colors should prevent eyestrain
+                    lineWidth: thickness
+                )
 
             Tickmarks(
                 theta: theta,
@@ -112,22 +115,23 @@ struct ContentView: View {
     }
 
     var body: some View {
+        // Colors should de-emphasize seconds in each mode, treating it like an accent color; see "ringColor" for background
         let secondsDial = Dial(
             value: $currentSecond,
             labels: Array(stride(from: 0, through: 55, by: 5)),
             subdivisions: 5
-        ).foregroundColor(Color.red)
+        ).foregroundColor(Color("SecondLabelColor"))
 
         let minutesDial = Dial(
             value: $currentMinute,
             tickmarkThickness: 2
-        )
+        ).foregroundColor(Color("MinuteLabelColor"))
 
         let hoursDial = Dial(
             value: $currentHour,
             labels: [12,1,2,3,4,5,6,7,8,9,10,11],
             tickmarkThickness: 3
-        )
+        ).foregroundColor(Color("HourLabelColor"))
 
         HStack {
             secondsDial
