@@ -10,14 +10,14 @@ import SwiftUI
 struct Tickmarks: Shape {
     @State var theta: CGFloat = 0.0
     @State var divisions: Int = 60
-    @State var inneroffset: CGFloat = 0.0
+    @State var inneroffset: CGFloat = 5.0 // distance inward from outeroffset
     @State var outeroffset: CGFloat = 20.0
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
         for hour in (0..<divisions) {
             let center = (x: Double(rect.width)/2.0, y: Double(rect.height)/2.0)
-            let innerradius = Double(rect.width)/2.0 - inneroffset
+            let innerradius = Double(rect.width)/2.0 + (outeroffset - inneroffset)
             let outerradius = Double(rect.width)/2.0 + outeroffset
 
             let radians = Double(hour) * (360.0/Double(divisions)) * Double.pi / 180.0 + theta
@@ -37,6 +37,7 @@ struct Dial: View {
     @State var thickness: Double = 44.0
     @State var shadow: Double = 5.0
     @State var subdivisions: Int = 1
+    @State var subdivisionProportion: Double = 1.0
     @State var tickmarkThickness: Double = 1.0
     @State var tickmarkLength: Double = 10.0
 
@@ -44,7 +45,7 @@ struct Dial: View {
 
     var body: some View {
         let labelCount: Int = labels.count
-        let proportion = value / Double(labelCount) / Double(subdivisions)
+        let proportion = value / Double(labelCount) / Double(subdivisions) / subdivisionProportion
         let theta = -2.0 * Double.pi * proportion
         let radius = Double(size.width) / 2.0
 
@@ -68,7 +69,7 @@ struct Dial: View {
             Tickmarks(
                 theta: theta,
                 divisions: labels.count * subdivisions,
-                inneroffset: -1.0 * tickmarkLength
+                inneroffset: tickmarkLength
             ).stroke(lineWidth: tickmarkThickness)
 
             // Labels
@@ -85,7 +86,6 @@ struct Dial: View {
                     width: radius * cos(radians),
                     height: radius * sin(radians))
                 )
-                .font(.caption)
             }
         }.onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
@@ -130,7 +130,10 @@ struct ContentView: View {
         let hoursDial = Dial(
             value: $currentHour,
             labels: [12,1,2,3,4,5,6,7,8,9,10,11],
-            tickmarkThickness: 3
+            subdivisions: 4,
+            subdivisionProportion: 0.25, // each is 1/4 of an hour
+            tickmarkThickness: 3,
+            tickmarkLength: 8.0
         ).foregroundColor(Color("HourLabelColor"))
 
         HStack {
@@ -138,14 +141,17 @@ struct ContentView: View {
                 .frame(width: 100, height: 100)
                 .offset(x: 100) // overlap
                 .padding(.leading, 100) // nudge back to safe area
+                .font(.caption)
 
             minutesDial
                 .frame(width: 300, height: 300)
                 .offset(x: 100) // overlap
+                .font(.caption)
 
             hoursDial
                 .frame(width: 600, height: 600)
                 .offset(x: 100) // overlap
+                .font(.title)
         }
         .environment(\.layoutDirection, .rightToLeft)
         .containerRelativeFrame([.horizontal, .vertical])
