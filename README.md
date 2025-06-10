@@ -8,10 +8,16 @@ Avoid pulsing lights or jumping images, while allowing the time
 to be easily read.
 
 Ultimately, I'd like this to be my default view in Standby mode, with
-complications for date, day of week, first event of the new day, night
-mode, etc.
+complications for date, day of week, first event of the new day, etc.
 
-## Screenshot
+## Screenshots
 
-Taken May 29, 2025, from the version in the initial commit
-![image](https://github.com/user-attachments/assets/7bd7a4e6-fc60-4374-a98b-1a08d34d6691)
+Taken from the [June 9th version](https://github.com/jacobrose/flowclock/commit/069cffeac703519b8772cc3b44c5181890401a15)
+
+### Dark Mode
+<img width="685" alt="Dark mode screenshot, showing dark red dials with bright red markings" src="https://github.com/user-attachments/assets/7bdda686-81d8-4d32-9da5-6fb0b949eb78" />
+
+
+### Light Mode
+<img width="685" alt="Light mode screenshot, showing white dials with black markings" src="https://github.com/user-attachments/assets/e3761e36-1a6d-45ee-a7b3-53a997fbd1ba" />
+
