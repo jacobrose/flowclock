@@ -165,6 +165,7 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 updateClock()
             }
+            .persistentSystemOverlays(.hidden)
     }
 }
 
