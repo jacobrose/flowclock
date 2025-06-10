@@ -12,12 +12,11 @@ complications for date, day of week, first event of the new day, etc.
 
 ## Screenshots
 
-Taken from the [June 9th version](https://github.com/jacobrose/flowclock/commit/069cffeac703519b8772cc3b44c5181890401a15)
+Taken from the [June 10th version](https://github.com/jacobrose/flowclock/commit/9dbf3967042fc9358da0ccea6afc642d6d101222)
 
 ### Dark Mode
-<img width="685" alt="Dark mode screenshot, showing dark red dials with bright red markings" src="https://github.com/user-attachments/assets/7bdda686-81d8-4d32-9da5-6fb0b949eb78" />
-
+  <img width="685" alt="Dark mode screenshot, showing dark red dials with bright red markings" src="https://github.com/user-attachments/assets/50a38f4d-51ad-4d5e-b568-59fbc0cf4699" />
 
 ### Light Mode
-<img width="685" alt="Light mode screenshot, showing white dials with black markings" src="https://github.com/user-attachments/assets/e3761e36-1a6d-45ee-a7b3-53a997fbd1ba" />
+  <img width="685" alt="Light mode screenshot, showing three white dials with black markings" src="https://github.com/user-attachments/assets/c99cfe9a-1007-406b-8cf5-d82cf1b41cbe" />
 
