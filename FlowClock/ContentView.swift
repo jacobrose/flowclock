@@ -115,17 +115,24 @@ struct ContentView: View {
     }
 
     var body: some View {
-        // Colors should de-emphasize seconds in each mode, treating it like an accent color; see "ringColor" for background
+        // Colors should de-emphasize seconds in each mode, treating it like an accent
         let secondsDial = Dial(
             value: $currentSecond,
             labels: Array(stride(from: 0, through: 55, by: 5)),
             subdivisions: 5
-        ).foregroundColor(Color("SecondLabelColor"))
+        )
+            .foregroundColor(Color("SecondLabelColor"))
+            .font(.caption)
 
         let minutesDial = Dial(
             value: $currentMinute,
-            tickmarkThickness: 2
-        ).foregroundColor(Color("MinuteLabelColor"))
+            labels: Array(stride(from: 0, through: 57, by: 3)),
+            subdivisions: 3,
+            tickmarkThickness: 2,
+            tickmarkLength: 7.5
+        )
+            .foregroundColor(Color("MinuteLabelColor"))
+            .font(.title3)
 
         let hoursDial = Dial(
             value: $currentHour,
@@ -133,32 +140,31 @@ struct ContentView: View {
             subdivisions: 4,
             subdivisionProportion: 0.25, // each is 1/4 of an hour
             tickmarkThickness: 3,
-            tickmarkLength: 8.0
-        ).foregroundColor(Color("HourLabelColor"))
+            tickmarkLength: 6.0
+        )
+            .foregroundColor(Color("HourLabelColor"))
+            .font(.title)
 
         HStack {
             secondsDial
                 .frame(width: 100, height: 100)
                 .offset(x: 100) // overlap
                 .padding(.leading, 100) // nudge back to safe area
-                .font(.caption)
 
             minutesDial
                 .frame(width: 300, height: 300)
                 .offset(x: 100) // overlap
-                .font(.caption)
 
             hoursDial
                 .frame(width: 600, height: 600)
                 .offset(x: 100) // overlap
-                .font(.title)
         }
-        .environment(\.layoutDirection, .rightToLeft)
-        .containerRelativeFrame([.horizontal, .vertical])
-        .background(Color.black)
-        .onReceive(timer) { _ in
-            updateClock()
-        }
+            .environment(\.layoutDirection, .rightToLeft)
+            .containerRelativeFrame([.horizontal, .vertical])
+            .background(Color.black)
+            .onReceive(timer) { _ in
+                updateClock()
+            }
     }
 }
 
