@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct Tickmarks: Shape {
     @State var theta: CGFloat = 0.0
@@ -95,10 +96,72 @@ struct Dial: View {
     }
 }
 
+struct protectSleepStorage {
+    public var alarmIsSet: Bool = false
+    public var defaultAlarmTime: Bool = false
+    public var sleepGoal: Double = 8.0 // TODO: source from fitness data
+    public var alarmTime: Date = Date()
+
+    mutating func toggle() {
+        // TODO: if we can't access sleep goal from fitness data, don't toggle defaultAlarmTime off; alarm is either on or off, no third option
+
+        if (alarmIsSet) {
+            if (defaultAlarmTime) {
+                defaultAlarmTime = false
+
+                // TODO: Update alarm time to sleep goal
+            } else {
+                alarmIsSet = false
+
+                // TODO: Update alarm to skip next alarm
+            }
+        } else {
+            alarmIsSet = true
+            defaultAlarmTime = true
+
+            // TODO: Update alarm to default set in Clock app
+        }
+    }
+}
+
+struct protectSleepTimeButton: View {
+    @Binding var protectSleepState: protectSleepStorage
+
+    @State private var size: CGSize = .zero
+
+    var body: some View {
+        GeometryReader { proxy in
+            Button(action: {}) {
+                Group {
+                    if (protectSleepState.alarmIsSet) {
+                        if (protectSleepState.defaultAlarmTime) {
+                            Image(systemName: "bell.fill")
+                        } else {
+                            Image(systemName: "moon.stars.fill")
+                        }
+                    } else {
+                        Image(systemName: "bell.slash.fill")
+                    }
+                }
+                .gesture(TapGesture().onEnded {
+                    protectSleepState.toggle()
+                })
+                .font(.system(size: min(proxy.size.width, proxy.size.height)))
+            }
+        }.onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: {
+            size = $0
+        }
+    }
+}
+
 struct ContentView: View {
     @State var currentHour: Double = 0
     @State var currentMinute: Double = 0.0
     @State var currentSecond: Double = 0.0
+
+    @State var protectSleepState = protectSleepStorage()
 
     let timer = Timer.publish(every: 0.05, tolerance: 0.05, on: .main, in: .common).autoconnect()
 
@@ -145,19 +208,28 @@ struct ContentView: View {
             .foregroundColor(Color("HourLabelColor"))
             .font(.title)
 
+        let protectSleepTime = protectSleepTimeButton(
+            protectSleepState: $protectSleepState
+        )
+
         HStack {
             secondsDial
                 .frame(width: 100, height: 100)
-                .offset(x: 100) // overlap
+                .offset(x: 150) // overlap
                 .padding(.leading, 100) // nudge back to safe area
 
             minutesDial
                 .frame(width: 300, height: 300)
-                .offset(x: 100) // overlap
+                .offset(x: 150) // overlap
 
             hoursDial
                 .frame(width: 600, height: 600)
-                .offset(x: 100) // overlap
+                .offset(x: 150) // overlap
+
+            protectSleepTime
+                .offset(x: -200, y: 150)
+                .frame(width: 40, height: 40)
+                .foregroundColor(Color("DialColor"))
         }
             .environment(\.layoutDirection, .rightToLeft)
             .containerRelativeFrame([.horizontal, .vertical])
