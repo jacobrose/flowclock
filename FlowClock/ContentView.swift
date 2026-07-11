@@ -68,15 +68,17 @@ struct Dial: View {
 
             Tickmarks(
                 theta: theta,
-                divisions: labels.count * subdivisions,
+                divisions: labelCount * subdivisions,
                 inneroffset: tickmarkLength
             ).stroke(lineWidth: tickmarkThickness)
 
             // Labels
-            ForEach (0..<labelCount) {
+            ForEach (0..<labelCount, id: \.self) {
                 labelIndex in
 
-                let radians = Double(labelIndex) / Double(labelCount) * 2.0 * Double.pi // base spread
+                let DoubleLabelIndex: Double = Double(labelIndex)
+                let DoubleLabelCount: Double = Double(labelCount)
+                let radians = DoubleLabelIndex / DoubleLabelCount * 2.0 * Double.pi // base spread
                     + Double.pi // rotate so zero is to the right
                     + theta
 
